@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "usuario")
 class User constructor(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int =0,
     @Column(name = "nombre")
     val name: String ="",
@@ -15,7 +15,7 @@ class User constructor(
     @Column(name = "correo")
     val mail: String="",
     @Column(name = "token")
-    val token: String=""
+    val token: String? = null
 ) {
 
 
