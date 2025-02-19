@@ -1,4 +1,4 @@
-package com.unam.fciencias.bern_demo_api
+package com.unam.fciencias.bern_demo_api.mascota
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
