@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
@@ -41,9 +42,14 @@ class UserController(var userService: UserService) {
     }
 
     @PostMapping("/logout")
-    fun logout(): ResponseEntity<String> {
-        val sessionClosed = "Sesión finalizada"
-        return ResponseEntity.ok(sessionClosed)
+    fun logout(@RequestHeader("Authorization") token: String): ResponseEntity<String> {
+        val successLogout = userService.logout(token)
+        if (!successLogout) {
+            return ResponseEntity.badRequest().build()
+        } else {
+            val sessionClosed = "Sesión finalizada"
+            return ResponseEntity.ok(sessionClosed)
+        }
     }
 
     @GetMapping("/me")

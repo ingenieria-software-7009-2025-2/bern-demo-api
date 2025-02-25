@@ -78,4 +78,15 @@ class UserService(var userRepository: UserRepository) {
         user.token = token
         userRepository.save(user)
     }
+
+
+    fun logout(token: String): Boolean {
+        val userFound = userRepository.findByToken(token)
+
+        if (userFound != null) {
+            userFound.token = null
+            userRepository.save(userFound)
+            return true
+        } else return false
+    }
 }
