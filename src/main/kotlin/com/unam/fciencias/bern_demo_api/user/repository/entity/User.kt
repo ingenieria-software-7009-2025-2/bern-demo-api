@@ -1,4 +1,4 @@
-package com.unam.fciencias.bern_demo_api.modules.user.data.local.entity
+package com.unam.fciencias.bern_demo_api.user.repository.entity
 
 import jakarta.persistence.*
 
