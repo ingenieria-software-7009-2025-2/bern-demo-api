@@ -5,6 +5,7 @@ import com.unam.fciencias.bern_demo_api.user.controller.body.UserBody
 import com.unam.fciencias.bern_demo_api.user.repository.UserRepository
 import com.unam.fciencias.bern_demo_api.user.domain.Usuario
 import com.unam.fciencias.bern_demo_api.user.repository.entity.User
+import com.unam.fciencias.bern_demo_api.user.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,20 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/v1/users")
-class UserController(var userRepository: UserRepository) {
+class UserController(var userService: UserService) {
 
     @PostMapping
     fun addUser(@RequestBody userBody: UserBody): ResponseEntity<Any> {
         //Convertir los datos del request a un objeto del dominio
         val usuario = Usuario(nombre = userBody.nombre, password = userBody.password, correo = userBody.mail)
 
-
-        //Convertir el objeto del dominio hacia un objeto de nuestra BD
-        val usuarioDB =
-            User(name = usuario.nombre, password = usuario.password!!, mail = usuario.correo, token = usuario.token)
-
-        val result = userRepository.save(usuarioDB)
-        return ResponseEntity.ok(result)
+        val response = userService.addUser(usuario)
+        return ResponseEntity.ok(response)
 
     }
 
@@ -51,7 +47,7 @@ class UserController(var userRepository: UserRepository) {
 
     @GetMapping
     fun getAllUsers(): ResponseEntity<Any> {
-        val result = userRepository.findAll()
+        val result = userService.retrieveAllUser()
         return ResponseEntity.ok(result)
     }
 }
