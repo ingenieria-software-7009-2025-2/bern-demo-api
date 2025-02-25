@@ -4,6 +4,7 @@ import com.unam.fciencias.bern_demo_api.user.domain.Usuario
 import com.unam.fciencias.bern_demo_api.user.repository.UserRepository
 import com.unam.fciencias.bern_demo_api.user.repository.entity.User
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class UserService(var userRepository: UserRepository) {
@@ -51,5 +52,30 @@ class UserService(var userRepository: UserRepository) {
         }
 
         return myUsers
+    }
+
+    fun login(mail: String, password: String): Usuario? {
+        val userFound = userRepository.findByEmailAndPassword(mail, password)
+
+        return if (userFound != null) {
+            val token = UUID.randomUUID().toString()
+            updateTokenUser(userFound, token)
+            Usuario(
+                id = userFound.id.toString(),
+                nombre = userFound.name,
+                correo = userFound.mail,
+                token = token,
+                password = userFound.password,
+                isActive = false
+            )
+        } else {
+            userFound
+        }
+
+    }
+
+    fun updateTokenUser(user: User, token: String) {
+        user.token = token
+        userRepository.save(user)
     }
 }

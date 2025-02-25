@@ -6,6 +6,7 @@ import com.unam.fciencias.bern_demo_api.user.repository.UserRepository
 import com.unam.fciencias.bern_demo_api.user.domain.Usuario
 import com.unam.fciencias.bern_demo_api.user.repository.entity.User
 import com.unam.fciencias.bern_demo_api.user.service.UserService
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,8 +30,14 @@ class UserController(var userService: UserService) {
 
     @PostMapping("/login")
     fun login(@RequestBody loginUserBody: LoginUserBody): ResponseEntity<Usuario> {
-        val usuario = Usuario(correo = loginUserBody.mail, password = loginUserBody.password, nombre = "")
-        return ResponseEntity.ok(usuario)
+        val result = userService.login(loginUserBody.mail, loginUserBody.password)
+
+        if (result == null) {
+            return ResponseEntity.notFound().build()
+        } else {
+            return ResponseEntity.ok(result)
+        }
+
     }
 
     @PostMapping("/logout")

@@ -9,13 +9,13 @@ class User constructor(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int =0,
     @Column(name = "nombre")
-    val name: String ="",
+    var name: String ="",
     @Column(name = "password")
-    val password: String="",
+    var password: String="",
     @Column(name = "correo")
-    val mail: String="",
+    var mail: String="",
     @Column(name = "token")
-    val token: String? = null
+    var token: String? = null
 ) {
 
 
