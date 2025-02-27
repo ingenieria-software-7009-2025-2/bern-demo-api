@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class UserService(var userRepository: UserRepository) {
+class UserService(private var userRepository: UserRepository) {
 
 
     fun addUser(usuario: Usuario): Usuario {
@@ -88,5 +88,20 @@ class UserService(var userRepository: UserRepository) {
             userRepository.save(userFound)
             return true
         } else return false
+    }
+
+    fun getInfoAboutMe(token: String): Usuario?{
+        val userFound = userRepository.findByToken(token)
+
+        if (userFound != null) {
+            return Usuario(
+                id = userFound.id.toString(),
+                nombre = userFound.name,
+                correo = userFound.mail,
+                token = "*******",
+                password = userFound.password,
+                isActive = false
+            )
+        } else return null
     }
 }

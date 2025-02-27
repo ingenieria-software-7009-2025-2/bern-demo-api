@@ -53,9 +53,13 @@ class UserController(var userService: UserService) {
     }
 
     @GetMapping("/me")
-    fun me(): ResponseEntity<Usuario> {
-        val userFake = Usuario(nombre = "Luis Bernabe", correo = "luis_berna@ciencias.unam.mx")
-        return ResponseEntity.ok(userFake)
+    fun me(@RequestHeader("Authorization") token: String): ResponseEntity<Usuario> {
+        val response =userService.getInfoAboutMe(token)
+        return if (response != null) {
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.status(401).build()
+        }
     }
 
     @GetMapping
