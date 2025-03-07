@@ -4,6 +4,8 @@ import com.unam.fciencias.bern_demo_api.user.controller.body.LoginUserBody
 import com.unam.fciencias.bern_demo_api.user.controller.body.UserBody
 import com.unam.fciencias.bern_demo_api.user.service.UserService
 import com.unam.fciencias.bern_demo_api.user.domain.Usuario
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/v1/users")
 class UserController(var userService: UserService) {
 
+    val logger: Logger = LoggerFactory.getLogger(UserController::class.java)
+
     /**
      * Endpoint para registrar un nuevo usuario.
      * @param userBody Datos del usuario que se recibirán en la petición.
@@ -25,6 +29,8 @@ class UserController(var userService: UserService) {
         // Convertir los datos del request a un objeto del dominio
         val usuario = Usuario(nombre = userBody.nombre, password = userBody.password, correo = userBody.mail)
         val response = userService.addUser(usuario)
+
+        logger.info("el body es $userBody")
         return ResponseEntity.ok(response)
     }
 
@@ -81,5 +87,9 @@ class UserController(var userService: UserService) {
     fun getAllUsers(): ResponseEntity<Any> {
         val result = userService.retrieveAllUser()
         return ResponseEntity.ok(result)
+    }
+
+    companion object {
+        const val TAG = "USER_CONTROLLER"
     }
 }

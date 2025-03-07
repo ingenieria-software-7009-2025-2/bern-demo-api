@@ -3,12 +3,15 @@ package com.unam.fciencias.bern_demo_api.user.service
 import com.unam.fciencias.bern_demo_api.user.domain.Usuario
 import com.unam.fciencias.bern_demo_api.user.repository.UserRepository
 import com.unam.fciencias.bern_demo_api.user.repository.entity.User
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class UserService(private var userRepository: UserRepository) {
 
+    val logger: Logger = LoggerFactory.getLogger(UserService::class.java)
 
     fun addUser(usuario: Usuario): Usuario {
 
@@ -27,6 +30,7 @@ class UserService(private var userRepository: UserRepository) {
             password = result.password,
             isActive = false
         )
+        logger.info("Desde el service el usuario creado es: $usuarioCreado")
         return usuarioCreado
     }
 
