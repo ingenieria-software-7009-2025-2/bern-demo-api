@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*
  */
 @Controller
 @RequestMapping("/v1/users")
+@CrossOrigin(origins = ["http://localhost:3000"])
 class UserController(var userService: UserService) {
 
     val logger: Logger = LoggerFactory.getLogger(UserController::class.java)
